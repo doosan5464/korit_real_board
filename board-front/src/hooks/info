@@ -1,0 +1,21 @@
+입력값을 유효성 검사하는 커스텀 훅
+
+상태 관리:
+
+
+name: 입력 필드의 name 속성 값을 저장.
+value: 입력 필드의 실제 값(사용자가 입력한 값)을 저장.
+errorMessage: 유효성 검사 실패 시 나타낼 에러 메시지를 저장.
+
+handleOnChange
+: 사용자가 입력할 때마다 호출되어, 입력된 값을 value 상태에 저장하고, 
+name 속성을 name 상태에 저장.
+
+handleOnBlur
+: 입력 필드에서 포커스를 잃을 때 호출되어, value가 정규 표현식 regexp에 맞는지 검사. 
+만약 맞지 않으면 errorText 메시지를 errorMessage 상태에 설정.
+
+
+반환 값
+: name, value, errorMessage, handleOnChange, handleOnBlur를 반환하여 
+입력 필드에서 상태와 유효성 검사 관련 처리를 할 수 있도록 함.

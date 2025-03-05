@@ -1,0 +1,11 @@
+mutation
+: 데이터의 생성(Create), 수정(Update), 삭제(Delete) 
+
+
+useQuery는 GET 요청(데이터 조회)할 때 쓰고,
+useMutation은 POST, PUT, DELETE 같은 데이터를 변경하는 작업에 사용
+
+
+mutation을 쓰면 상태 관리, 최적화, 자동 데이터 업데이트 같은 기능을 쉽게 적용할 수 있어서,
+유지보수와 성능이 좋아짐.
+그냥 axios.post()를 써도 되지만, 확장성과 유지보수를 고려하면 mutation을 쓰는 게 좋음
