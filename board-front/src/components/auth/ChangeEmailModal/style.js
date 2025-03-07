@@ -143,22 +143,3 @@ export const setButton = css`
         cursor: default;
     }
 `;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

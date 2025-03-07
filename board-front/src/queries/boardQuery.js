@@ -23,4 +23,4 @@ export const useGetSearchBoardList = () => useQuery({
     retry: 0,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 5
-});
+})
