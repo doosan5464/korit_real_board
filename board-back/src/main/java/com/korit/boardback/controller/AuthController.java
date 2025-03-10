@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth") // 인증 관련 API 엔드포인트
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -34,10 +34,11 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody ReqLoginDto dto) {
         /**
          * UserService -> login()
-         * User 객체 findByUsername
+         * User객체 findByUsername
          * user가 있으면 비밀번호 일치하는지 확인
          * 비밀번호가 일치하면 JWT 응답
          * JwtUtil -> secret 세팅
+         *
          */
         RespTokenDto respTokenDto = RespTokenDto.builder()
                 .type("JWT")
@@ -50,7 +51,6 @@ public class AuthController {
 
     @PostMapping("/email")
     public ResponseEntity<?> sendAuthEmail(@RequestBody ReqAuthEmailDto dto) throws Exception {
-        // 사용자 정보를 가져와 인증 메일 전송
         User user = userService.getUserByUsername(dto.getUsername());
         emailService.sendAuthMail(user.getEmail(), dto.getUsername());
         return ResponseEntity.ok().build();
@@ -61,7 +61,7 @@ public class AuthController {
             @RequestParam String username,
             @RequestParam String token
     ) {
-        // 이메일 인증 처리 후 결과를 JavaScript alert로 반환
+
         String script = String.format("""
             <script>
                 alert("%s");
@@ -72,4 +72,3 @@ public class AuthController {
         return ResponseEntity.ok().header("Content-Type", "text/html; charset=utf-8").body(script);
     }
 }
-

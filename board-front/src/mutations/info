@@ -2,7 +2,6 @@ mutation
 : 데이터의 생성(Create), 수정(Update), 삭제(Delete) 
 
 
-useQuery는 GET 요청(데이터 조회)할 때 쓰고,
 useMutation은 POST, PUT, DELETE 같은 데이터를 변경하는 작업에 사용
 
 

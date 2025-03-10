@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api") // API 기본 경로 설정
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -24,21 +24,20 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    // @AuthenticationPrincipal
-    // : 현재 로그인한 사용자의 정보를 컨트롤러에서 바로 가져올 수 있도록 해줌
-
-    @GetMapping("/user/me") // 현재 로그인한 사용자 정보 조회
+    @GetMapping("/user/me")
     public ResponseEntity<?> getLoginUser(@AuthenticationPrincipal PrincipalUser principalUser) {
+//        PrincipalUser principalUser2 =
+//                (PrincipalUser) SecurityContextHolder
+//                    .getContext()
+//                    .getAuthentication()
+//                    .getPrincipal();
         if(principalUser.getUser().getProfileImg() == null) {
-            principalUser.getUser().setProfileImg("default.png"); // 프로필 이미지 없으면 기본 이미지 설정
+            principalUser.getUser().setProfileImg("default.png");
         }
         return ResponseEntity.ok().body(principalUser.getUser());
     }
 
-    // @RequestPart                                      vs  @RequestBody
-    // 파일 업로드나 멀티파트 요청에서 특정 부분을 추출할 때 사용 vs  JSON 데이터를 받을 때 사용
-
-    @PostMapping("/user/profile/img") // 프로필 이미지 변경
+    @PostMapping("/user/profile/img")
     public ResponseEntity<?> changeProfileImg(
             @AuthenticationPrincipal PrincipalUser principalUser,
             @RequestPart MultipartFile file) {
@@ -47,17 +46,17 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/user/profile/nickname") // 닉네임 변경
+    @PutMapping("/user/profile/nickname")
     public ResponseEntity<?> changeNickname(
             @AuthenticationPrincipal PrincipalUser principalUser,
             @RequestBody Map<String, String> requestBody
-    ) {
+            ) {
         String nickname = requestBody.get("nickname");
         userService.updateNickname(principalUser.getUser(), nickname);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/user/profile/password") // 비밀번호 변경
+    @PutMapping("/user/profile/password")
     public ResponseEntity<?> changePassword(
             @AuthenticationPrincipal PrincipalUser principalUser,
             @RequestBody Map<String, String> requestBody
@@ -67,7 +66,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/user/profile/email/send") // 이메일 변경 인증 코드 전송
+    @PostMapping("/user/profile/email/send")
     public ResponseEntity<?> sendEmailChangeVerification(
             @RequestBody Map<String, String> requestBody
     ) throws MessagingException {
@@ -77,7 +76,7 @@ public class UserController {
         return ResponseEntity.ok().body(code);
     }
 
-    @PutMapping("/user/profile/email") // 이메일 변경
+    @PutMapping("/user/profile/email")
     public ResponseEntity<?> changeEmail(
             @AuthenticationPrincipal PrincipalUser principalUser,
             @RequestBody Map<String, String> requestBody
@@ -87,3 +86,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 }
+
+
+
+
+
+
+
+
+
+

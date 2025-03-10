@@ -17,59 +17,58 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration // Spring Security 설정 클래스
+@Configuration
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter; // JWT 인증 필터
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService; // OAuth2 사용자 서비스
+    private CustomOAuth2UserService customOAuth2UserService;
     @Autowired
-    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler; // OAuth2 로그인 성공 핸들러
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     @Autowired
-    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint; // 인증 실패 핸들러
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() { // 비밀번호 암호화
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults()); // CORS 설정
-        http.csrf(csrf -> csrf.disable()); // CSRF 비활성화
+        http.cors(Customizer.withDefaults());
+        http.csrf(csrf -> csrf.disable());
 
         http.sessionManagement(sessionManagement -> {
-            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 사용 안 함 (JWT 방식)
+            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         });
 
-        http.httpBasic(httpBasic -> httpBasic.disable()); // 기본 인증 비활성화
-        http.formLogin(formLogin -> formLogin.disable()); // 폼 로그인 비활성화
-
+        http.httpBasic(httpBasic -> httpBasic.disable());
+        http.formLogin(formLogin -> formLogin.disable());
         http.oauth2Login(oauth2 -> {
             oauth2.userInfoEndpoint(userInfoEndpoint -> {
-                userInfoEndpoint.userService(customOAuth2UserService); // OAuth2 사용자 서비스 설정
+               userInfoEndpoint.userService(customOAuth2UserService);
             });
-            oauth2.successHandler(customOAuth2SuccessHandler); // OAuth2 로그인 성공 핸들러 설정
+            oauth2.successHandler(customOAuth2SuccessHandler);
         });
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        // JWT 인증 필터 추가
 
         http.exceptionHandling(exception -> {
-            exception.authenticationEntryPoint(customAuthenticationEntryPoint); // 인증 실패 핸들링
+            exception.authenticationEntryPoint(customAuthenticationEntryPoint);
         });
 
         http.authorizeHttpRequests(authorizeRequests -> {
-            authorizeRequests.requestMatchers("/api/auth/**", "/image/**").permitAll(); // 특정 경로 허용
-            authorizeRequests.anyRequest().authenticated(); // 나머지는 인증 필요
+            authorizeRequests.requestMatchers("/api/auth/**", "/image/**").permitAll();
+            authorizeRequests.anyRequest().authenticated();
         });
 
         return http.build();
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() { // CORS 설정
+    public CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);

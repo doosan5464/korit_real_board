@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
-@Service // OAuth2 사용자 정보를 처리하는 서비스
+@Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     @Autowired
@@ -24,17 +24,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Autowired
     private UserRoleRepository userRoleRepository;
     @Autowired
-    private DefaultOAuth2UserService defaultOAuth2UserService; // 기본 OAuth2 사용자 서비스
+    private DefaultOAuth2UserService defaultOAuth2UserService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class) // 예외 발생 시 롤백
+    @Transactional(rollbackFor = Exception.class)
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         String email = null;
         String oauth2Name = null;
-        String oauth2Provider = userRequest.getClientRegistration().getRegistrationId(); // 제공자 정보
+        String oauth2Provider = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes = getDefaultOAuth2User(userRequest).getAttributes();
-
-        // OAuth2 제공자별 사용자 정보 매핑
         if(oauth2Provider.equalsIgnoreCase("naver")) {
             attributes = (Map<String, Object>) attributes.get("response");
             oauth2Name = (String) attributes.get("id");
@@ -49,7 +47,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         final String finalEmail = email;
         final String finalOauth2Name = oauth2Name;
 
-        // 사용자 정보 조회 또는 신규 사용자 등록
         User user = userRepository
                 .findByUsername(username)
                 .orElseGet(() -> {
@@ -65,18 +62,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                             .accountEnabled(1)
                             .build();
                     User savedUser = userRepository.save(newUser);
-
-                    // 기본 권한 부여
                     UserRole userRole = UserRole.builder()
                             .userId(savedUser.getUserId())
                             .roleId(1)
                             .build();
                     userRoleRepository.save(userRole);
-
                     return userRepository.findByUsername(username).get();
                 });
 
-        // PrincipalUser 객체 생성 및 반환
         return PrincipalUser.builder()
                 .user(user)
                 .name(oauth2Name)
@@ -85,8 +78,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private OAuth2User getDefaultOAuth2User(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        return defaultOAuth2UserService.loadUser(userRequest); // 기본 OAuth2 사용자 정보 가져오기
+        return defaultOAuth2UserService.loadUser(userRequest);
     }
 
 }
-

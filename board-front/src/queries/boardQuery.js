@@ -9,15 +9,9 @@ export const useGetCategories = () => useQuery({
     gcTime: 1000 * 60 * 5
 });
 
-export const useGetSearchBoardList = () => useQuery({
+export const useGetSearchBoardList = (params) => useQuery({
     queryKey: ["useGetSearchBoardList"],
     queryFn: async () => {
-        const params = {
-            page: 1,
-            limitCount: 15,
-            order: "recent",
-            searchText: "",
-        };
         return await getSearchBoardListApi(params);
     },
     retry: 0,

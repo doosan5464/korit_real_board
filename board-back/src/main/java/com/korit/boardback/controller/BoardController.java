@@ -22,7 +22,7 @@ public class BoardController {
             @PathVariable String categoryName,
             @RequestBody ReqWriteBoardDto dto,
             @AuthenticationPrincipal PrincipalUser principalUser
-    ) {
+            ) {
 
         return ResponseEntity.ok().body(boardService.createBoard(categoryName, principalUser.getUser(), dto));
     }
@@ -32,7 +32,7 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.getBoardCategoriesByUserId(principalUser.getUser()));
     }
 
-    @GetMapping("/list") // @ModelAttribute 는 객체단위로 들고옴
+    @GetMapping("/list")
     public ResponseEntity<?> searchBoardList(@ModelAttribute ReqBoardListSearchDto dto) {
         int totalBoardListCount = boardService.getBoardListCountBySearchText(dto.getSearchText());
         int totalPages = totalBoardListCount % dto.getLimitCount() == 0

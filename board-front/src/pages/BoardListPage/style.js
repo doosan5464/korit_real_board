@@ -174,7 +174,7 @@ export const pageNumbers = css`
     display: flex;
     width: 25rem;
 
-    & > div {
+    & > button {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -187,8 +187,13 @@ export const pageNumbers = css`
         font-weight: 600;
         font-size: 1.2rem;
         cursor: pointer;
+        background-color: #ffffff;
 
         &:hover {
+            background-color: #eeeeee;
+        }
+
+        &:disabled {
             background-color: #fafafa;
         }
 
@@ -199,5 +204,5 @@ export const pageNumbers = css`
 `;
 
 export const pageNum = (isSelect) => css`
-    background-color: ${isSelect ? "#eeeeee" : "#ffffff"};
+    background-color: ${isSelect ? "#eeeeee" : "#ffffff"} !important;
 `;

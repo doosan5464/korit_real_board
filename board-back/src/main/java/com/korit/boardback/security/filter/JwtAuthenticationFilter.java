@@ -17,42 +17,42 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component // 스프링 빈으로 등록
+@Component
 public class JwtAuthenticationFilter implements Filter {
 
     @Autowired
-    private JwtUtil jwtUtil; // JWT 유틸리티 클래스
+    private JwtUtil jwtUtil;
     @Autowired
-    private UserRepository userRepository; // 사용자 정보 조회용 리포지토리
+    private UserRepository userRepository;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-        jwtAuthentication(getAccessToken(request)); // JWT 인증 수행
+        jwtAuthentication(getAccessToken(request));
 
-        filterChain.doFilter(servletRequest, servletResponse); // 다음 필터 실행
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     private void jwtAuthentication(String accessToken) {
-        if(accessToken == null) {return;} // 토큰이 없으면 종료
-        Claims claims = jwtUtil.parseToken(accessToken); // 토큰 검증 및 정보 추출
+        if(accessToken == null) {return;}
+        Claims claims = jwtUtil.parseToken(accessToken);
 
         int userId = Integer.parseInt(claims.getId());
-        User user = userRepository.findById(userId).get(); // 사용자 조회
+        User user = userRepository.findById(userId).get();
 
         PrincipalUser principalUser = PrincipalUser.builder().user(user).build();
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication); // 인증 정보 설정
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String getAccessToken(HttpServletRequest request) {
         String accessToken = null;
-        String authorization = request.getHeader("Authorization"); // 헤더에서 토큰 가져오기
+        String authorization = request.getHeader("Authorization");
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
-            accessToken = authorization.substring(7); // "Bearer " 부분 제거
+            accessToken = authorization.substring(7);
         }
 
         return accessToken;
