@@ -61,7 +61,8 @@
             </if>
         </where>
     </select>
-    <select id="selectBoardListByUserIdAndCatehoryNameAndSearchongOption"
+
+    <select id="selectBoardListAllByUserIdAndCategoryNameAndSearchOption"
             resultType="com.korit.boardback.entity.BoardSearch">
         select
             bt.board_id as boardId,
@@ -82,5 +83,16 @@
         order by
             boardId desc
         limit #{startIndex}, #{limitCount}
+    </select>
+    <select id="selectBoardCategoryCountAllByUserIdAndCategoryName" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            board_tb bt
+            inner join board_category_tb bct on(bct.board_category_id = bt.board_category_id)
+            inner join user_tb ut on(ut.user_id = bt.user_id)
+        where
+            bct.board_category_name = #{categoryName}
+            and ut.user_id = #{userId}
     </select>
 </mapper>

@@ -1,19 +1,20 @@
+
 import { css } from "@emotion/react";
 
-export const scrollLayout = css`    
+export const scrollLayout = css`
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 62.5rem;
-    overflow-y: auto; // 세로 스크롤 허용
-    `;
+    overflow-y: auto;
+`;
 
 export const cardLayoutGroup = css`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
-    flex-grow: 1; // height: 100% 하면 옵저버가 화면밖으로 밀려남
+    flex-grow: 1;
 `;
 
 export const cardLayout = css`
@@ -21,7 +22,7 @@ export const cardLayout = css`
     flex-direction: column;
     box-sizing: border-box;
     margin: 1rem 0;
-    border: 0.1rem, solid #dbdbdb;
+    border: 0.1rem solid #dbdbdb;
     border-radius: 0.5rem;
     width: 39.9rem;
     height: 15rem;
@@ -45,6 +46,7 @@ export const cardLayout = css`
         padding: 1rem;
         height: 6rem;
     }
+
     & > main {
         display: flex;
         justify-content: center;
@@ -92,7 +94,7 @@ export const boardCounts = css`
     & > span {
         position: relative;
         margin-right: 1rem;
-        font-size: 2rem;
+        font-size: 1.8rem;
         cursor: default;
 
         &:hover > span {
