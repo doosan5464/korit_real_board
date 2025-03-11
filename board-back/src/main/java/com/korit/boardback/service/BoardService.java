@@ -59,6 +59,10 @@ public class BoardService {
         return boardRepository.findBoardCountAllBySearchText(searchText);
     }
 
+    public List<BoardSearch> getBoardCategoryList(User user, String categoryName, ReqBoardListSearchDto dto) {
+
+    }
+
 }
 
 

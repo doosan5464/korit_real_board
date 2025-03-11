@@ -8,6 +8,7 @@ import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import { useQueryClient } from '@tanstack/react-query';
 import BoardWritePage from '../../pages/BoardWritePage/BoardWritePage';
 import BoardListPage from '../../pages/BoardListPage/BoardListPage';
+import CategoryBoardListPage from '../../pages/CategoryBoardListPage/CategoryBoardListPage';
 
 function MainRoute(props) {
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ function MainRoute(props) {
                 <Routes>
                     <Route path="/account/setting" element={<AccountPage />} />
                     <Route path="/board/list" element={<BoardListPage />} />
+                    <Route path="/board/category/list" element={<CategoryBoardListPage />} />
                     <Route path="/board/write/:categoryName" element={<BoardWritePage />} />
                     <Route path="/*" element={<NotFoundPage />} />
                 </Routes>

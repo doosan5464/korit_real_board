@@ -15,5 +15,6 @@ public class RespBoardListSearchDto {
     private int totalElements;
     private boolean isFirstPage;
     private boolean isLastPage;
+    private List<BoardSearch> nextPage;
     private List<BoardSearch> boardSearchList;
 }
